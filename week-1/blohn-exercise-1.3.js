@@ -22,17 +22,17 @@ function CellPhone(manufacturer, model, color, price) {
   this.color = color;
   this.price = price;
 
-  // Create a prototype method for the CellPhone object to return the price
+  // Create method for the CellPhone object to return the price
   this.getPrice = function() {
     return this.price;
   }
 
-  // Create a prototype method for the CellPhone object to return the model
+  // Create a method for the CellPhone object to return the model
   this.getModel = function() {
     return this.model;
   }
 
-  // Create a prototype method for the CellPhone object to return the object's values
+  // Create a method for the CellPhone object to return the object's values
   // and output them.
   this.getDetails = function() {
     return "-- DISPLAYING CELL PHONE DETAILS --\n" +
