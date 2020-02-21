@@ -21,26 +21,26 @@ function CellPhone(manufacturer, model, color, price) {
   this.model = model;
   this.color = color;
   this.price = price;
+}
 
-  // Create a prototype method for the CellPhone object to return the price
-  this.getPrice = function() {
-    return this.price;
-  }
+// Create a prototype method for the CellPhone object to return the price
+CellPhone.prototype.getPrice = function() {
+  return this.price;
+}
 
-  // Create a prototype method for the CellPhone object to return the model
-  this.getModel = function() {
-    return this.model;
-  }
+// Create a prototype method for the CellPhone object to return the model
+CellPhone.prototype.getModel = function() {
+  return this.model;
+}
 
-  // Create a prototype method for the CellPhone object to return the object's values
-  // and output them.
-  this.getDetails = function() {
-    return "-- DISPLAYING CELL PHONE DETAILS --\n" +
-    "Manufacturer: " + this.manufacturer + "\n" +
-    "Model: " + this.getModel() + "\n" +
-    "Color: " + this.color + "\n" +
-    "Price: \$" + this.getPrice();
-  }
+// Create a prototype method for the CellPhone object to return the object's values
+// and output them.
+CellPhone.prototype.getDetails = function() {
+  return `-- DISPLAYING CELL PHONE DETAILS --\n` +
+  `Manufacturer: ${this.manufacturer}\n` +
+  `Model: ` + this.getModel() + `\n` +
+  `Color: ${this.color}\n` +
+  `Price: \$` + this.getPrice();
 }
 
 // Define a variable to create a new CellPhone instance
