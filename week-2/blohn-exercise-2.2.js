@@ -25,10 +25,10 @@ var person = {
   // Create a person object
   var smith = Object.create(person, {
     "age": {
-      value: 99
+      "value": 99
     },
-    fullName: {
-      value: "Bob Smith"
+    "fullName": {
+      "value": "Bob Smith"
     }
   });
 
