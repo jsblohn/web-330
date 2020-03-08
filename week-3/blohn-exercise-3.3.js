@@ -35,10 +35,10 @@ var DatabaseSingleton = (function() {
 
 // Create two new database instances.
 function databaseSingletonTest() {
-  var databaseInstance1 = DatabaseSingleton.getInstance();
-  var databaseInstance2 = DatabaseSingleton.getInstance();
+  var mySql = DatabaseSingleton.getInstance();
+  var postgres = DatabaseSingleton.getInstance();
 
-  console.log("Same database instance? " + (databaseInstance1 === databaseInstance2));
+  console.log("Same database instance? ", mySql === postgres);
 }
 
 // Call the function.
