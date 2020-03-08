@@ -15,7 +15,22 @@ const header = require('../blohn-header');
 // Print the Header
 console.log(header.display("Janet", "Blohn", "Exercise 3.2"));
 
-// Create the Oracle Database class.
+// Create the Postgres function class
+function Postgres(properties) {
+  this.username = properties.username || "admin";
+  this.password = properties.password || "s3cret";
+  this.server = properties.server || "localhost:5432";
+}
+
+// Create the MySql function class
+function MySql(properties) {
+  this.username = properties.username || "ca-admin";
+  this.password = properties.password || "ca-s3cret";
+  this.server = properties.server || "localhost:8000";
+  this.version = properties.version || 5.7;
+}
+
+// Create the Oracle function class.
 function Oracle(properties) {
   this.username = properties.username || "maintain";
   this.password = properties.password || "my5tery";
@@ -23,7 +38,7 @@ function Oracle(properties) {
   this.version = properties.version || "19c";
 }
 
-// Create the Informix Database class.
+// Create the Informix function class.
 function Informix(properties) {
   this.username = properties.username || "ibm-maintain";
   this.password = properties.password || "ibm-my5tery";
@@ -34,16 +49,39 @@ function Informix(properties) {
 function DatabaseFactory() {}
 
 // Create the Database based on the Database type.
-DatabaseFactory.prototype.databaseClass = Informix;
+DatabaseFactory.prototype.databaseClass = MySql;
 DatabaseFactory.prototype.createDatabase = function(properties) {
+  if (properties.databaseType === "Postgres") {
+    this.databaseClass = Postgres;
+  }
+  if (properties.databaseType === "MySql") {
+    this.databaseClass = MySql;
+  }
   if (properties.databaseType === "Oracle") {
     this.databaseClass = Oracle;
-  } else {
+  }
+  if (properties.databaseType === "Informix") {
     this.databaseClass = Informix;
   }
 
   return new this.databaseClass(properties);
 };
+
+// Create the Postgres Factory.
+var postgresFactory = new DatabaseFactory();
+var postgres = postgresFactory.createDatabase({
+  databaseType: "Postgres",
+  username: "admin",
+  password: "SuperSecret"
+});
+
+// Create the MySql Factory.
+var mySqlFactory = new DatabaseFactory();
+var mySql = mySqlFactory.createDatabase({
+  databaseType: "MySQL",
+  username: "default",
+  password: "password"
+});
 
 // Create the Oracle Factory.
 var oracleFactory = new DatabaseFactory();
@@ -62,16 +100,15 @@ var informix = informixFactory.createDatabase({
 });
 
 // Output the Oracle Database
-console.log("Oracle {\n" +
-"username: " + oracle.username +
-"\npassword: " + oracle.password +
-"\nserver: " + oracle.server +
-"\nversion: " + oracle.version +
-"\n}\n");
+console.log("Oracle {");
+for (let [key, value] of Object.entries(oracle)) {
+  console.log(key + ": " + value);
+}
+console.log("}\n");
 
 // Output the Informix Database
-console.log("Informix {\n" +
-"username: " + informix.username +
-"\npassword: " + informix.password +
-"\nserver: " + informix.server +
-"\n}\n");
+console.log("Informix {");
+for (let [key, value] of Object.entries(informix)) {
+  console.log(key + ": " + value);
+}
+console.log("}");
