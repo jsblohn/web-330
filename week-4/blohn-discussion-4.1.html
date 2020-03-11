@@ -1,0 +1,54 @@
+<!--
+============================================
+; Title:  blohn-discussion-4.1.html
+; Author: Janet Blohn
+; Date:   10 March 2020
+; Modified By: N/A
+; Description: Discussion 4.1 - AJAX example
+; Create an example of a key/value pair.
+============================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Discussion 4.1</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  </head>
+  <body>
+
+    <!-- Create to buttons to show success and failure messges -->
+    <button id="button1">Click for Successful Connection</button>
+    <br />
+    <button id="button2">Click for Failed Connection</button>
+
+    <script type="text/javascript">
+
+    // jQuery AJAX example using success
+    $('button#button1').on('click', function() {
+      $.ajax({
+        url: "http://www.msn.com",
+        success: function(response) {
+          alert("Connection successful!");
+          console.log("Success connecting.");
+        },
+        method: 'GET',
+      });
+    });
+
+    // jQuery AJAX example using error
+    $('button#button2').on('click', function() {
+      var badUrl = "http://www.mson.com";
+        $.ajax(badUrl, {
+          error: function(response) {
+          alert("Webpage doesn't exist!");
+         console.log("Connection to " + badUrl + " failed.");
+      },
+      method: 'GET',
+      });
+    });
+  </script>
+  </body>
+</html>
