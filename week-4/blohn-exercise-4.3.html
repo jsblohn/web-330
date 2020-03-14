@@ -1,0 +1,44 @@
+<!--
+============================================
+; Title:  blohn-exercise-4.3.html
+; Author: Professor Krasso
+; Date:   13 March 2020
+; Modified By: Janet Blohn
+; Description: Exercise 4.3 - HTTP PUT and DELETE Operations
+; Create a button with an ID and description,
+; Register onClick event, create literal object for deletion.
+============================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Exercise 4.3</title>
+
+    <!-- jQuery reference -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  </head>
+  <body>
+    <!-- Create a Header and a Delete button -->
+    <h4>Exercise 4.3: HTTP DELETE Request</h4>
+    <button id="delete">Press to Delete</button>
+
+    <!-- Create the javascript to delete a record -->
+    <script type="text/javascript">
+      $(function() {
+        $("#delete").click(function() {
+          $.ajax({
+            url: "http://httpbin.org/delete",
+            dataType: "json",
+            type: "DELETE",
+            data: {name: "Joe Smith", city: "Omaha", state: "NE"},
+            success: function(data, status) {
+              console.log("Name: " + data.form.name + "\nCity: " + data.form.city + "\nState: " + data.form.state + "\nStatus: " + status);
+            }
+          })
+        });
+      });
+    </script>
+  </body>
+</html>
