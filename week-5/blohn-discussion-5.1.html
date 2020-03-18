@@ -1,0 +1,36 @@
+<!--
+============================================
+; Title:  blohn-discussion-5.1.html
+; Author: Janet Blohn
+; Date:   17 March 2020
+; Modified By: N/A
+; Description: Discussion 5.1 - jQuery Namespaces
+; Create an example of a jQuery Namespace.
+============================================
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Discussion 5.1 Example</title>
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function() {
+          $("button").on("press.aNamespace",function(event){
+            alert('The namespace for this event is: ' + event.namespace);
+            console.log("Answer: " + event.namespace);
+          });
+          $("button").click(function(event) {
+            $(this).trigger("press.aNamespace");
+          });
+        });
+        console.log("What's the namespace name?");
+        </script>
+</head>
+<body>
+  <button>Click here for namespace name</button>
+</body>
+</html>
