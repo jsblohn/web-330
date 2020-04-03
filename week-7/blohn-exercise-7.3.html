@@ -4,7 +4,7 @@
 ; Author: Professor Krasso
 ; Date:   02 April 2020
 ; Modified By: N/A
-; Description: Exercise 7.2 - The "foreach" binding
+; Description: Exercise 7.3 - The "foreach" binding
 ; Create a list of textbook objects and output them to a table using foreach.
 ============================================
 -->
@@ -55,6 +55,7 @@
             <th>Price</th>
           </tr>
         </thead>
+        <!-- Use "foreach" to iterate through all of the objects and put them on the table -->
         <tbody data-bind="foreach: books">
           <tr>
             <td data-bind="text: bookName"></td>
@@ -66,6 +67,7 @@
 
     <script>
       function BookViewModel() {
+        // Array of objects to iterate through to create the Book Table
         this.books = ko.observableArray([
           {bookName: "JavaScript The Definitive Guide", price: 80.52},
           {bookName: "Exploring Interface Design", price: 70.99},

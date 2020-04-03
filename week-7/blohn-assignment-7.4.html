@@ -1,0 +1,108 @@
+<!--
+============================================
+; Title:  blohn-assignment-7.4.html
+; Author: Professor Krasso
+; Date:   03 April 2020
+; Modified By: N/A
+; Description: Assignment 7.4 - Other bindings
+; Create a list of tutorials and use "foreach", "style", and "attr", and the containerless sysntax to output them to a table.
+============================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Assignment 7.4</title>
+
+    <!-- Stylesheet - Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Knockout -->
+    <script src="../knockout-3.5.1.js"></script>
+    <style type="text/css">
+    .table-striped tbody tr:nth-of-type(2n+1) {background: bisque;}</style>
+  </head>
+  <body>
+    <!-- Set up the Navigation Bar -->
+    <nav class="navbar navbar-expand-sm table-danger navbar-light">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div role="main" class="container">
+      <br/><br/>
+
+      <h2 class="text-center">Assignment 7.4: Other Bindings Example</h2>
+      <br/>
+      <!-- Set the table definition up for the objects -->
+      <table class="table table-success table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+             <th>Link</th>
+            </tr>
+        </thead>
+
+        <!-- Use "foreach" to iterate through all of the objects and put them on the table -->
+        <tbody data-bind="foreach: tutorials">
+          <tr>
+            <td data-bind="text: txtTitle"></td>
+            <td data-bind="text: txtDescription"></td>
+            <td><a class="nav-link" data-bind="style: {color: 'black', 'font-weight': 'bold'}, attr: {href: link}", target="_blank"><!--ko text: linkText--><!--/ko--></a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Give credit for the descriptions in the table -->
+      <h5 class="text-center">All descriptions were copied directly from their corresponding websites.</h5>
+      </div>
+
+      <script>
+        function TutorialViewModel() {
+          // Array of objects to iterate through to create the Tutorial Table
+          this.tutorials = ko.observableArray ([
+            {txtTitle: "JavaScript Tutorial",
+            txtDescription: "This tutorial will teach you JavaScript from basic to advanced.", link: "https://www.w3schools.com/js/DEFAULT.asp",
+             linkText: "W3C JavaScript Tutorial"},
+            {txtTitle: "Javascript Tutorial",
+            txtDescription: "This tutorial has been prepared for JavaScript beginners to help them understand the basic functionality of JavaScript to build dynamic web pages and web applications.",
+            link: "https://www.tutorialspoint.com/javascript/index.htm",
+            linkText: "Tutorialspoint JavaScript Tutorial"},
+            {txtTitle: " The Modern JavaScript Tutorial",
+            txtDescription: "How it's done now. From the basics to advanced topics with simple, but detailed explanations.",
+            link: "https://javascript.info/",
+            linkText: "Modern JavaScript Tutorial Site"},
+            {txtTitle: "JavaScript Tutorial for Beginners: Learn Javascript in 5 Days",
+            txtDescription: "This online guide is geared to make you a JavaScript pro!",
+            link: "https://www.guru99.com/interactive-javascript-tutorials.html",
+            linkText: "Course on Guru99's site"},
+            {txtTitle: "Learn JavaScript - Free Interactive JavaScript Tutorial",
+            txtDescription: "Welcome to the learn-js.org interactive JavaScript tutorial. Whether you are an experienced programmer or not, this website is intended for everyone who wishes to learn the JavaScript programming language.",
+            link: "https://www.learn-js.org/",
+            linkText: "Interactive Tutorial"}
+          ]);
+        }
+
+        ko.applyBindings(new TutorialViewModel());
+
+      </script>
+  </body>
+</html>
+
