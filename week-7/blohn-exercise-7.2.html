@@ -1,0 +1,97 @@
+<!--
+============================================
+; Title:  blohn-exercise-7.2.html
+; Author: Professor Krasso
+; Date:   02 April 2020
+; Modified By: N/A
+; Description: Exercise 7.2 - The "if" binding
+; Create a ViewPersonModel using if to create the fields.
+============================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Exercise 7.2</title>
+
+    <!-- Stylesheet - Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Knockout -->
+    <script src="../knockout-3.5.1.js"></script>
+  </head>
+  <body>
+    <!-- Set up the Navigation Bar -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div role="main" class="container">
+      <br/><br/>
+
+      <h2>ViewPersonModel</h2>
+
+      <div class="form-group col-sm-4">
+        <label for="txtFirst">First Name:</label>
+        <!-- Bind the firstName field to Knockout -->
+        <input type="text" data-bind="value: firstName" class="form-control" id="txtFirst"/>
+      </div>
+
+      <!-- If a firstName exists, show the field for the Last Name. -->
+      <div data-bind="if:displayFirstName">
+        <div class="form-group col-sm-4">
+          <label for="txtLast">Last Name:</label>
+
+          <input type="text" data-bind="value:lastName" class="form-control" id="txtLast"/>
+        </div>
+      </div>
+
+      <br/>
+
+      <!-- If a lastName exists, display the full name. -->
+      <div data-bind="if: lastName">
+        <h2>
+          <span id="txtFullName" class="alert-success"
+          data-bind="text:displayName"></span>
+        </h2>
+      </div>
+    </div>
+
+    <script>
+      function PersonViewModel() {
+        // Make the first and last name fields observable to Knockout.
+        this.firstName = ko.observable("");
+        this.lastName = ko.observable("");
+
+        // Knockout equating firstName to displayFirstName.
+        this.displayFirstName = ko.pureComputed(function() {
+          return this.firstName();
+        }, this);
+
+        // Knockout combining the first and last name and returning them as the full name.
+        this.displayName = ko.pureComputed(function() {
+          return this.firstName() + " " + this.lastName();
+        }, this);
+      }
+
+      ko.applyBindings(new PersonViewModel());
+    </script>
+  </body>
+</html>

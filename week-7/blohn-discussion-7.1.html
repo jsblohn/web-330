@@ -1,0 +1,72 @@
+<!--
+============================================
+; Title:  blohn-discussion-7.1.html
+; Author: Janet Blohn
+; Date:   01 April 2020
+; Modified By: N/A
+; Description: Discussion - 7.1 d Binding
+; An example of a Knockout Custom Binding
+============================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Discussion 7.1</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="../knockout-3.5.1.js"></script>
+  </head>
+  <body>
+
+    <!-- Bind the textArea to the enlargeOnMouseOver function -->
+    <p data-bind="enlargeOnMouseOver: textArea, makeBig: {fontSize: '6em'}, makeSmall: {fontSize: '4em'}">Rollover the text to enlarge it, click to reduce it to its original size.</p>
+
+    <script type="text/javascript">
+
+    // begin custom binding
+    ko.bindingHandlers.enlargeOnMouseOver = {
+
+      // Initialize the function for the mouseover and the click
+      init: function(element, valueAccessor) {
+        $(element).mouseover(function() {
+          var value = valueAccessor();
+          value(true);
+        });
+
+        $(element).click(function() {
+          var value = valueAccessor();
+          value(false);
+        });
+      },
+
+      // If mouseover is true, enlarge the text; if click is true, reduce it back.
+      update: function(element, valueAccessor, allBindingsAccessor) {
+        var value = valueAccessor();
+        var allBindings = allBindingsAccessor();
+        var big = allBindings.makeBig;
+        var small = allBindings.makeSmall;
+          if (ko.utils.unwrapObservable(value))
+            $(element).animate(big);
+          else
+            $(element).animate(small);
+        }
+      };
+    // end custom binding
+
+    // Set the observable to the textArea
+    function viewModel() {
+      var self = this;
+      self.textArea = ko.observable()
+    };
+
+    // Apply bindings
+    ko.applyBindings(new viewModel());
+    </script>
+  </body>
+</html>
