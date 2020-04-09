@@ -100,11 +100,10 @@
           if (
             this.nameToAdd() !== "" &&
             this.employeeList.indexOf(this.nameToAdd()) < 0) {
-			console.log(this.employeeList.indexOf(this.nameToAdd()));
-              this.error("");
-              this.employeeList.push(this.nameToAdd());
+			      this.error("");
+            this.employeeList.push(this.nameToAdd());
             } else {
-              this.error(" Duplicate or Invalid Entry.");
+            this.error(" Duplicate or Invalid Entry.");
             }
 
             this.nameToAdd("");
