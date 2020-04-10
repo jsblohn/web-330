@@ -1,0 +1,291 @@
+<!--
+============================================
+; Title:  blohn-assignment-8.4.html
+; Author: Professor Krasso
+; Date:   08 April 2020
+; Modified By: N/A
+; Description: Assignment 8.4 - CRUD Operations
+; Create a CR UD Example using a PayrollViewModel.
+============================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Assignment 8.4</title>
+
+    <!-- Stylesheet - Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+    <!-- Knockout -->
+    <script src="../knockout-3.5.1.js"></script>
+
+    <!-- Internal Stylesheet -->
+    <style>
+      a {
+        color: white;
+        text-decoration: none,
+      }
+
+      a:hover {
+        color: white;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Define the Navigation Bar -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <ul class ="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div role="main" class="container">
+      <br/><br/>
+      <h2>CRUD Example</h2>
+      <br/><br/>
+
+     <!-- Give a warning message if the user tries to add an existing employee or clicks the "Add" button when the field is empty. -->
+      <div class="row" data-bind="if: error">
+        <div class="col-sm-12">
+          <div class="alert alert-danger" role="alert">
+            <strong>Warning!</strong> <span data-bind="text: error()"></span>
+          </div>
+        </div>
+      </div>
+
+      <br/>
+      <!-- Define the "Add" portion of the form. -->
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+            <div class="card-block p-3">
+              <h3 class="card-title">Add New Employees</h3>
+              <div class="card-text">
+                <div class="form-group row">
+                  <label for="txtName" class="col-2 col-form-label">Name:
+                  </label>
+                  <div class="col-6">
+                    <input type="text" data-bind="value: nameToAdd, valueUpdate: 'afterkeydown'" class="form-control" id="txtName"/>
+                  </div>
+                  <div class="col-4">
+                    <span>
+                      <a href="#" data-bind="click: add" class="btn btn-primary"><i class="fa fa-plus fa-lg"></i> ADD
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+       <!--    </div> -->
+       <!-- </div> -->
+      <!-- </div> -->
+      <!-- Create the table of Employees with the "Edit" and "Delete options. -->
+
+      <!-- <div class="row"> -->
+      <!--   <div class="col-sm-8"> -->
+      <!--     <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;"> -->
+            <div class="card-block p-3">
+              <h3 class="card-title">Employee List</h3>
+              <div class="card-text">
+                <table class="table table-dark table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>EmployeeId</th>
+                      <th>Name</th>
+                      <th>Functions</th>
+                    </tr>
+                  </thead>
+                  <!-- Display the array of employees with an "EDIT" and "DELETE" button for each one -->
+                  <tbody data-bind="foreach: Employees">
+                    <tr>
+                      <td data-bind="text: Id"></td>
+                      <td data-bind="text: Name"></td>
+                      <td>
+                        <span>
+                          <a href="#" class="btn btn-success" data-bind="click: $root.edit">
+                            <i class="fa fa-pencil fa-lg"></i> EDIT
+                          </a>
+                        </span>
+                        |
+                        <span>
+                          <a href="#" class="btn btn-danger" data-bind="click: $root.remove">
+                            <i class="fa fa-trash-o fa-lg"></i> DELETE
+                          </a>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display the Edit box only if an Employee is chosen for edit -->
+        <div class="col-sm-4" data-bind="if: Employee">
+          <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+            <div class="card-block p-3">
+              <h3 class="card-title">Employee Name</h3>
+              <div class="card-text">
+                <div class="form-group">
+                  <label for="txtName">Name: </label>
+                  <input type="text" id="txtName" data-bind="value: Employee().Name" class="form-control"/>
+                </div>
+
+                <div class="form-group float-right">
+                  <button data-bind="click: $root.cancel" class="btn btn-group btn-danger">Cancel
+                  </button>
+                  <button data-bind="click: $root.update" class="btn btn-group btn-success">Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+    </div>
+
+    <script>
+
+      function Employee(id, name) {
+        this.Id = id;
+        this.Name = name;
+      }
+
+      // Define a list of employees with an Id and a Name.
+      var employeeList = [
+        new Employee(1, "Mickey Mouse"),
+        new Employee(2, "Donald Duck"),
+        new Employee(3, "Olive Oil"),
+        new Employee(4, "Popeye Sailor"),
+        new Employee(5, "Tweetie Bird")
+      ];
+
+      // Define the view model observables.
+      function PayrollViewModel() {
+        var self = this;
+
+        self.error = ko.observable("");
+
+        self.Id = ko.observable("");
+        self.Name = ko.observable("");
+        self.Emp = ko.observable("");
+        // Make each Employee observable
+        var Employee = {
+          Id: self.Id,
+          Name: self.Name
+        };
+
+        self.nameToAdd = ko.observable("");
+        self.Employee = ko.observable();
+        //employeeList = ko.observableArray("");
+        self.Employees = ko.observableArray(employeeList);
+//self.employeeList = employeeList;
+//self.Employees = employeeList;
+        console.log(self.Employees);
+
+        // Add a New Employee
+        self.add = function() {
+          if (
+            self.nameToAdd() !== "" &&
+            //self.Employees.name.indexOf(self.nameToAdd()) < 0) {
+              self.Employee.name.indexOf(self.nameToAdd()) < 0) {
+              //employeeList.indexOf(self.nameToAdd) < 0) {
+
+            console.log(employeeList.indexOf(self.nameToAdd()));
+            console.log(self.Employees.indexOf(self.nameToAdd));
+              self.error("");
+
+
+
+            //self.employeeList.push(self.nameToAdd()); from 8.2
+            var Emp = Object.create(Employee);
+            Emp.Id = employeeList.length + 1;
+            Emp.Name = self.nameToAdd();
+            if(self.nameToAdd() !== "" &&
+            //self.Employees.name.indexOf(self.nameToAdd()) < 0) {
+              self.Employees.indexOf(Emp.Name) < 0) {
+              //employeeList.indexOf(self.nameToAdd) < 0) {
+
+
+              self.error("");};
+            /*self.Employee = Object.create(Employee);
+            self.Id = employeeList.length + 1;
+            self.Name = self.nameToAdd();*/
+//Emp = new self.Employee;
+           // self.Employees.push(Emp);
+
+//employeeList.push(self.Employee);
+
+            //self.employeeList = self.Employees;
+            //employeeList.push(self.Employees);
+            console.log(self.Employee);
+            console.log(Emp);
+           // Emp = new self.Employee;
+self.Employees.push(Emp);
+console.log(self.Employees);
+//employeeList.push(self.Employee);
+            //employeeList.push(Emp);
+            //self.employeeList.push(Emp);
+            //self.Employees.push(employeeList);
+
+            } else {
+              self.error(" Duplicate or Invalid Entry.");
+            }
+
+            self.nameToAdd("");
+
+        };
+
+
+
+        // Edit the Employee that was clicked on.
+        self.edit = function(Employee) {
+          self.Employee(Employee);
+        };
+
+        // Remove the employee from the list when "Delete" button clicked
+        self.remove = function(Employee) {
+          self.Employees.remove(Employee);
+        };
+
+        // Clear out the Employee name if the "Cancel" button is clicked.
+        self.cancel = function() {
+          self.Employee(null);
+        };
+
+        // Remove the Employee being updated from the array, and add them back in with changes at the bottom of the array.
+        self.update = function() {
+          var l_employee = self.Employee();
+          self.Employees.remove(self.Employee());
+          self.Employees.push(l_employee);
+        };
+      }
+console.log(self.Employee);
+      ko.applyBindings(new PayrollViewModel());
+    </script>
+  </body>
+</html>
