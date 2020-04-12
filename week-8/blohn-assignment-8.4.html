@@ -2,7 +2,7 @@
 ============================================
 ; Title:  blohn-assignment-8.4.html
 ; Author: Professor Krasso
-; Date:   08 April 2020
+; Date:   12 April 2020
 ; Modified By: N/A
 ; Description: Assignment 8.4 - CRUD Operations
 ; Create a CR UD Example using a PayrollViewModel.
@@ -34,6 +34,10 @@
 
     <!-- Internal Stylesheet -->
     <style>
+      .center {
+        text-align: center;
+      }
+
       a {
         color: white;
         text-decoration: none,
@@ -63,7 +67,7 @@
 
     <div role="main" class="container">
       <br/><br/>
-      <h2>CRUD Example</h2>
+      <h2 class="center">CRUD Example</h2>
       <br/><br/>
 
      <!-- Give a warning message if the user tries to add an existing employee or clicks the "Add" button when the field is empty. -->
@@ -81,7 +85,7 @@
         <div class="col-sm-8">
           <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
             <div class="card-block p-3">
-              <h3 class="card-title">Add New Employees</h3>
+              <h3 class="card-title center">Add New Employees</h3>
               <div class="card-text">
                 <div class="form-group row">
                   <label for="txtName" class="col-2 col-form-label">Name:
@@ -91,23 +95,17 @@
                   </div>
                   <div class="col-4">
                     <span>
-                      <a href="#" data-bind="click: add" class="btn btn-primary"><i class="fa fa-plus fa-lg"></i> ADD
+                      <a href="#" data-bind="click: $root.add" class="btn btn-primary"><i class="fa fa-plus fa-lg"></i> ADD
                       </a>
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-       <!--    </div> -->
-       <!-- </div> -->
-      <!-- </div> -->
-      <!-- Create the table of Employees with the "Edit" and "Delete options. -->
 
-      <!-- <div class="row"> -->
-      <!--   <div class="col-sm-8"> -->
-      <!--     <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;"> -->
+      <!-- Create the table of Employees with the "Edit" and "Delete options. -->
             <div class="card-block p-3">
-              <h3 class="card-title">Employee List</h3>
+              <h3 class="card-title center">Employee List</h3>
               <div class="card-text">
                 <table class="table table-dark table-striped table-hover">
                   <thead>
@@ -117,6 +115,7 @@
                       <th>Functions</th>
                     </tr>
                   </thead>
+
                   <!-- Display the array of employees with an "EDIT" and "DELETE" button for each one -->
                   <tbody data-bind="foreach: Employees">
                     <tr>
@@ -147,7 +146,7 @@
         <div class="col-sm-4" data-bind="if: Employee">
           <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
             <div class="card-block p-3">
-              <h3 class="card-title">Employee Name</h3>
+              <h3 class="card-title center">Employee Name</h3>
               <div class="card-text">
                 <div class="form-group">
                   <label for="txtName">Name: </label>
@@ -165,11 +164,9 @@
           </div>
         </div>
       </div>
-      <br/>
     </div>
 
     <script>
-
       function Employee(id, name) {
         this.Id = id;
         this.Name = name;
@@ -189,11 +186,11 @@
         var self = this;
 
         self.error = ko.observable("");
-
         self.Id = ko.observable("");
         self.Name = ko.observable("");
         self.Emp = ko.observable("");
-        // Make each Employee observable
+
+        // Define each Employee
         var Employee = {
           Id: self.Id,
           Name: self.Name
@@ -201,74 +198,44 @@
 
         self.nameToAdd = ko.observable("");
         self.Employee = ko.observable();
-        //employeeList = ko.observableArray("");
         self.Employees = ko.observableArray(employeeList);
-//self.employeeList = employeeList;
-//self.Employees = employeeList;
-        console.log(self.Employees);
 
         // Add a New Employee
-        self.add = function() {
-          if (
-            self.nameToAdd() !== "" &&
-            //self.Employees.name.indexOf(self.nameToAdd()) < 0) {
-              self.Employee.name.indexOf(self.nameToAdd()) < 0) {
-              //employeeList.indexOf(self.nameToAdd) < 0) {
-
-            console.log(employeeList.indexOf(self.nameToAdd()));
-            console.log(self.Employees.indexOf(self.nameToAdd));
-              self.error("");
-
-
-
-            //self.employeeList.push(self.nameToAdd()); from 8.2
+        self.add = function() {  // If the name doesn't yet exist, define it.
+          if (self.nameToAdd() !== "" && !sameName(self.nameToAdd())) {
+            self.error("");  // Clear the error message
+            // Define the new Employee
             var Emp = Object.create(Employee);
             Emp.Id = employeeList.length + 1;
             Emp.Name = self.nameToAdd();
-            if(self.nameToAdd() !== "" &&
-            //self.Employees.name.indexOf(self.nameToAdd()) < 0) {
-              self.Employees.indexOf(Emp.Name) < 0) {
-              //employeeList.indexOf(self.nameToAdd) < 0) {
 
-
-              self.error("");};
-            /*self.Employee = Object.create(Employee);
-            self.Id = employeeList.length + 1;
-            self.Name = self.nameToAdd();*/
-//Emp = new self.Employee;
-           // self.Employees.push(Emp);
-
-//employeeList.push(self.Employee);
-
-            //self.employeeList = self.Employees;
-            //employeeList.push(self.Employees);
-            console.log(self.Employee);
-            console.log(Emp);
-           // Emp = new self.Employee;
-self.Employees.push(Emp);
-console.log(self.Employees);
-//employeeList.push(self.Employee);
-            //employeeList.push(Emp);
-            //self.employeeList.push(Emp);
-            //self.Employees.push(employeeList);
-
-            } else {
+           // Push the new Employee to the Employees table.
+            self.Employees.push(Emp);
+          } else {
               self.error(" Duplicate or Invalid Entry.");
-            }
-
+          }
             self.nameToAdd("");
-
         };
 
-
+        sameName = function(nameToAdd) {
+          var same = false;
+          self.Employees().forEach(person => {
+            if(person.Name === nameToAdd) {
+            same = true;
+            }
+          });
+          return same;
+        };
 
         // Edit the Employee that was clicked on.
         self.edit = function(Employee) {
+          self.error("");  // Clear the error message
           self.Employee(Employee);
         };
 
         // Remove the employee from the list when "Delete" button clicked
         self.remove = function(Employee) {
+          self.error("");  // Clear the error message
           self.Employees.remove(Employee);
         };
 
@@ -284,7 +251,7 @@ console.log(self.Employees);
           self.Employees.push(l_employee);
         };
       }
-console.log(self.Employee);
+
       ko.applyBindings(new PayrollViewModel());
     </script>
   </body>
